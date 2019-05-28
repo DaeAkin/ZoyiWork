@@ -46,18 +46,18 @@ public class DAOBase {
 	
 	public Connection getConnection() throws SQLException {
 		try {
-			Class.forName("com.mysql.jdbc.Driver"); // ojdbc6.jar 占쏙옙占쏙옙譴占쏙옙占� 占쌨모리울옙 占쏙옙占쏙옙
+			Class.forName("com.mysql.jdbc.Driver"); 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/zoyi?verifyServerCertificate=false&amp; useSSL=false", 
-					"root", "!djaak4124");
+					"db아이디", "db 비번");
 			return conn;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
-		} // 占쏙옙占쏙옙占쏙옙占쏙옙占쏙옙 占싱울옙占쏙옙 占쏙옙占쏙옙(connection) 占쏙옙체 占쏙옙占쏙옙
+		} 
 		return null;
 	}
 
