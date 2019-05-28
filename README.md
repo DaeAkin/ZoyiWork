@@ -53,6 +53,6 @@ public Connection getConnection() throws SQLException {
 DB연결에서 아이디와 비밀번호 수정해주셔야 합니다.
 
 
-### Mysql 5.7 <u>DB명 : zoyi</u>
+### Mysql 5.7 <u>DB이 : zoyi</u>
 ### JDK 1.8
 ### servlet 3.1 
