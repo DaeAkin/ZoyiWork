@@ -7,16 +7,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.ls.LSInput;
 
-import work.dao.TranslateDao;
+import work.dao.TranslationDao;
 import work.dto.Translation;
 // Translation Dao Test
 public class DaoTest {
 	
-	TranslateDao dao;
+	TranslationDao dao;
 	
 	@Before
 	public void setUp() {
-		dao = new TranslateDao();
+		dao = new TranslationDao();
 	}
 
 	@Test
@@ -51,5 +51,10 @@ public class DaoTest {
 		for (Translation translation : list) {
 			System.out.println(translation);
 		}
+	}
+	
+	@Test
+	public void updateTranslationTest() {
+		dao.updateTranslation("Who am I?", 1, "en");
 	}
 }

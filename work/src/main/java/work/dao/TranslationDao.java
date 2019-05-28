@@ -10,7 +10,7 @@ import java.util.List;
 import work.dto.Key;
 import work.dto.Translation;
 
-public class TranslateDao extends DAOBase {
+public class TranslationDao extends DAOBase {
 
 	Connection conn = null;
 	PreparedStatement pstmt = null;
@@ -18,15 +18,16 @@ public class TranslateDao extends DAOBase {
 	ResultSet rs = null;
 	
 	//키의 모든 번역 확인하기 
-	public List<Translation> getAllTranslation() {
+	public List<Translation> getAllTranslationWithKey(int keyId) {
 		System.out.println("--- translate() ----");
+		System.out.println("keyId : " + keyId);
 		ArrayList<Translation> list = new ArrayList<Translation>();
 		
 		try {
 			conn = getConnection();
 			stmt = conn.createStatement(); 
 			String query = "";
-			query = "select * from zoyitranslation";
+			query = "select * from zoyitranslation where keyId ="+ keyId;
 			rs = stmt.executeQuery(query);
 			
 			while(rs.next()) {
@@ -49,17 +50,20 @@ public class TranslateDao extends DAOBase {
 	}
 	
 	//키의 특정 번역 확인하기
-	public List<Translation> getAllTranslatioWithOneKey(int keyId) {
+	public Translation getTranslatioWithOneKeyAndWtihOneLocale(int keyId, String locale) {
 		System.out.println("--- translate() ----");
-		ArrayList<Translation> list = new ArrayList<Translation>();
+		System.out.println("keyId : " + keyId);
+		
 		
 		try {
 			conn = getConnection();
-			stmt = conn.createStatement(); 
-			String query = "";
-			query = "select * from zoyitranslation where keyId ="+keyId;
-			rs = stmt.executeQuery(query);
 			
+			pstmt = 
+				conn.prepareStatement("select * from zoyitranslation where keyId=? and locale=?");
+			pstmt.setInt(1, keyId);
+			pstmt.setString(2, locale);
+			
+			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				
 				Translation tl = new Translation();
@@ -67,7 +71,7 @@ public class TranslateDao extends DAOBase {
 				tl.setKeyId(rs.getInt(2));
 				tl.setLocale(rs.getString(3));
 				tl.setValue(rs.getString(4));
-				list.add(tl);
+				return tl;
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -75,7 +79,7 @@ public class TranslateDao extends DAOBase {
 			closeDBResources(rs, stmt, pstmt, conn);
 		}
 		
-		return list;
+		return null;
 		
 	}
 	
@@ -100,12 +104,13 @@ public class TranslateDao extends DAOBase {
 	}
 	
 	//키의 특정 번역 수정하기
-	public void updateTranslation(String willChangedValue,int keyId) {
+	public int updateTranslation(String willChangedValue,int keyId,String locale) {
 		try {
 			conn = getConnection();
-			pstmt = conn.prepareStatement("update zoyikey set name=? where name=?");
-			pstmt.setString(1, rename);
-	    	pstmt.setString(2, target);
+			pstmt = conn.prepareStatement("update zoyitranslation set value=? where keyId=? and locale=?");
+			pstmt.setString(1, willChangedValue);
+	    	pstmt.setInt(2, keyId);
+	    	pstmt.setString(3, locale);
 	    	return 	pstmt.executeUpdate();
 	    	 
 			} catch (Exception e) {
@@ -115,5 +120,25 @@ public class TranslateDao extends DAOBase {
 			}
 			return 0;
 	}
+	
+//	//id 알아오는 용 
+//	public Translation getOne() {
+//		public int updateTranslation(String willChangedValue,int keyId,String locale) {
+//			try {
+//				conn = getConnection();
+//				pstmt = conn.prepareStatement("select * from zoyitranslation where keyId=? and locale=?");
+//				pstmt.setString(1, willChangedValue);
+//		    	pstmt.setInt(2, keyId);
+//		    	pstmt.setString(3, locale);
+//		    	return 	pstmt.executeUpdate();
+//		    	 
+//				} catch (Exception e) {
+//					// TODO: handle exception
+//				} finally {
+//					 closeDBResources(rs, stmt, pstmt, conn);
+//				}
+//				return 0;
+//		}
+//	}
 	
 }

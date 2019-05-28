@@ -7,8 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.core.sym.Name;
-
 import work.dto.Key;
 
 public class KeyDao extends DAOBase{
@@ -66,12 +64,12 @@ public class KeyDao extends DAOBase{
 		
 	}
 	
-	public int updateKey(String target , String rename) {
+	public int updateKey(int keyId, String target)  {
 		try {
 		conn = getConnection();
-		pstmt = conn.prepareStatement("update zoyikey set name=? where name=?");
-		pstmt.setString(1, rename);
-    	pstmt.setString(2, target);
+		pstmt = conn.prepareStatement("update zoyikey set name=? where id =?");
+    	pstmt.setString(1, target);
+    	pstmt.setInt(2, keyId);
     	return 	pstmt.executeUpdate();
     	 
 		} catch (Exception e) {
